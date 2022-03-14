@@ -1,0 +1,55 @@
+{
+    "name": "dealt/dealt-sdk",
+    "description": "Dealt API SDK",
+    "keywords": [
+        "dealt",
+        "api",
+        "sdk"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Edvin CANDON",
+            "email": "edvin@lostsolution.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.20.0",
+        "friendsofphp/php-cs-fixer": "^3.2.1",
+        "phpstan/phpstan": "^1.1.1",
+        "symfony/var-dumper": "^5.3.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dealt\\DealtSDK\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "lint": "php-cs-fixer fix -v",
+        "test:lint": "php-cs-fixer fix -v --dry-run",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "pest --colors=always",
+        "test": [
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
+        ]
+    }
+}
