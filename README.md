@@ -2,7 +2,7 @@
 
 ---
 
-> **Requires [PHP 7.2+](https://php.net/releases/)**
+> **Requires [PHP 7.3+](https://php.net/releases/)**
 
 ```bash
 composer lint
