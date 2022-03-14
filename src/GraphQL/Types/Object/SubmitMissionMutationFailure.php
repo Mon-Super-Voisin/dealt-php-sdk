@@ -6,6 +6,7 @@ use Dealt\DealtSDK\GraphQL\Types\Enum\SubmitMissionMutationFailureReason;
 
 /**
  * @property string $reason
+ *
  * @method SubmitMissionMutationFailure fromJson()
  */
 class SubmitMissionMutationFailure extends AbstractObjectType

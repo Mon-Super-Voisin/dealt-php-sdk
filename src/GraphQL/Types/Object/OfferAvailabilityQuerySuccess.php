@@ -7,6 +7,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
  * @property Money $netPrice
  * @property Money $grossPrice
  * @property Money $vat
+ *
  * @method OfferAvailabilityQuerySuccess fromJson()
  */
 class OfferAvailabilityQuerySuccess extends AbstractObjectType

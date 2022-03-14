@@ -5,6 +5,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 /**
  * @property string $currencyCode
  * @property float  $amount
+ *
  * @method Money fromJson()
  */
 class Money extends AbstractObjectType

@@ -2,8 +2,6 @@
 
 namespace Dealt\DealtSDK\GraphQL;
 
-use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
-
 interface GraphQLObjectInterface
 {
     public function setProperty($key, $value): GraphQLObjectInterface;

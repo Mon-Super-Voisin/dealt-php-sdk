@@ -4,6 +4,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
  * @property Mission $mission
+ *
  * @method SubmitMissionMutationSuccess fromJson()
  */
 class SubmitMissionMutationSuccess extends AbstractObjectType

@@ -7,7 +7,7 @@ use Dealt\DealtSDK\Services\DealtServiceFactory;
 
 class DealtClient extends CoreDealtClient
 {
-    /** @var DealtServiceFactory $serviceFactory */
+    /** @var DealtServiceFactory */
     private $serviceFactory;
 
     /**

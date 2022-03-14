@@ -13,14 +13,15 @@ use Dealt\DealtSDK\GraphQL\GraphQLClient;
  */
 class CoreDealtClient
 {
-    /** @var GraphQLClient $serviceFactory */
+    /** @var GraphQLClient */
     public $gqlClient;
     public const DEFAULT_CONFIG = [
         'env' => DealtEnvironment::TEST,
     ];
 
     /**
-     * Initializes a new client
+     * Initializes a new client.
+     *
      * @param array<string, mixed> $config an array containing the client configuration setttings
      */
     public function __construct($config = [])

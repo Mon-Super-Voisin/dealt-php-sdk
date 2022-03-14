@@ -6,6 +6,7 @@ use Dealt\DealtSDK\GraphQL\Types\Enum\OfferAvailabilityQueryFailureReason;
 
 /**
  * @property string $reason
+ *
  * @method OfferAvailabilityQueryFailure fromJson()
  */
 class OfferAvailabilityQueryFailure extends AbstractObjectType
