@@ -4,6 +4,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
  * @property Mission $mission
+ * @method SubmitMissionMutationSuccess fromJson()
  */
 class SubmitMissionMutationSuccess extends AbstractObjectType
 {
@@ -14,9 +15,4 @@ class SubmitMissionMutationSuccess extends AbstractObjectType
             'objectClass' => Mission::class,
         ],
     ];
-
-    public static function fromJson($json): SubmitMissionMutationSuccess
-    {
-        return parent::fromJson($json);
-    }
 }

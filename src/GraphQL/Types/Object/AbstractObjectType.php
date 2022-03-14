@@ -31,7 +31,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
         return join(' ', $fragments);
     }
 
-    public function setProperty($key, $value): self
+    public function setProperty($key, $value): GraphQLObjectInterface
     {
         $definitions = array_keys(static::$objectDefinition);
         if (in_array($key, $definitions)) {
@@ -41,7 +41,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
         return $this;
     }
 
-    public static function fromJson($json): AbstractObjectType
+    public static function fromJson($json): GraphQLObjectInterface
     {
         $objectClass = static::class;
         $definitions = static::$objectDefinition;

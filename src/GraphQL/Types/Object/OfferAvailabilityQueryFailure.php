@@ -6,6 +6,7 @@ use Dealt\DealtSDK\GraphQL\Types\Enum\OfferAvailabilityQueryFailureReason;
 
 /**
  * @property string $reason
+ * @method OfferAvailabilityQueryFailure fromJson()
  */
 class OfferAvailabilityQueryFailure extends AbstractObjectType
 {
@@ -17,9 +18,4 @@ class OfferAvailabilityQueryFailure extends AbstractObjectType
             'isEnum'      => true,
         ],
     ];
-
-    public static function fromJson($json): OfferAvailabilityQueryFailure
-    {
-        return parent::fromJson($json);
-    }
 }

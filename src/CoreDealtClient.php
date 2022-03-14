@@ -13,6 +13,7 @@ use Dealt\DealtSDK\GraphQL\GraphQLClient;
  */
 class CoreDealtClient
 {
+    /** @var GraphQLClient $serviceFactory */
     public $gqlClient;
     public const DEFAULT_CONFIG = [
         'env' => DealtEnvironment::TEST,
@@ -20,11 +21,6 @@ class CoreDealtClient
 
     /**
      * Initializes a new client
-     * Configuration settings include the following options:.
-     *
-     * - api_key (string): The Dealt API Key to be used for internal GraphQL requests.
-     * - env (null|string): The Dealt API Environment ("production"|"test") - defaults to test.
-     *
      * @param array<string, mixed> $config an array containing the client configuration setttings
      */
     public function __construct($config = [])
@@ -34,7 +30,7 @@ class CoreDealtClient
         }
         $config = array_merge(DealtClient::DEFAULT_CONFIG, $config);
         $this->validateConfig($config);
-        $this->gqlClient = new GraphQLClient($config['api_key'], $config['env']);
+        $this->gqlClient = new GraphQLClient(strval($config['api_key']), strval($config['env']));
     }
 
     /**
@@ -42,7 +38,7 @@ class CoreDealtClient
      *
      * @throws InvalidArgumentException
      */
-    private function validateConfig($config)
+    private function validateConfig($config): void
     {
         if (!isset($config['api_key']) || !is_string($config['api_key'])) {
             throw new InvalidArgumentException('api_key must be a string');

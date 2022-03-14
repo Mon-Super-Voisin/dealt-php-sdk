@@ -30,7 +30,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
         return join("\n", $unionFragment);
     }
 
-    public static function fromJson($json): AbstractObjectType
+    public static function fromJson($json): GraphQLObjectInterface
     {
         $typename   = $json->__typename;
 
@@ -53,7 +53,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
     /**
      * @throws GraphQLException
      */
-    public function setProperty($key, $value): AbstractObjectType
+    public function setProperty($key, $value): GraphQLObjectInterface
     {
         throw new GraphQLException('Cannot set property on union type');
     }

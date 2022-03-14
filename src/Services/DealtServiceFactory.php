@@ -3,6 +3,7 @@
 namespace Dealt\DealtSDK\Services;
 
 use Dealt\DealtSDK\DealtClient;
+use Exception;
 
 class DealtServiceFactory
 {
@@ -25,7 +26,12 @@ class DealtServiceFactory
         return array_key_exists($name, self::$classMap) ? self::$classMap[$name] : null;
     }
 
-    public function __get($name)
+    /**
+     * Undocumented function.
+     *
+     * @throws Exception
+     */
+    public function __get(string $name): AbstractDealtService
     {
         $serviceClass = $this->getServiceClass($name);
         if (null !== $serviceClass) {
@@ -36,6 +42,6 @@ class DealtServiceFactory
             return $this->services[$name];
         }
 
-        return null;
+        throw new Exception('unknown service requested');
     }
 }

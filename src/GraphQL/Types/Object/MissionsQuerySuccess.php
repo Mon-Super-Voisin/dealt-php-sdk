@@ -4,6 +4,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
  * @property array<Mission> $missions
+ * @method MissionsQuerySuccess fromJson()
  */
 class MissionsQuerySuccess extends AbstractObjectType
 {
@@ -14,9 +15,4 @@ class MissionsQuerySuccess extends AbstractObjectType
             'objectClass' => Mission::class,
         ],
     ];
-
-    public static function fromJson($json): MissionsQuerySuccess
-    {
-        return parent::fromJson($json);
-    }
 }

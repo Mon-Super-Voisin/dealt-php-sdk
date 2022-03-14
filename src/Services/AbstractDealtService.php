@@ -2,13 +2,17 @@
 
 namespace Dealt\DealtSDK\Services;
 
+use Dealt\DealtSDK\DealtClient;
 use Dealt\DealtSDK\GraphQL\GraphQLClient;
 
 abstract class AbstractDealtService
 {
-    /** @var GraphQLClient */
+    /** @var DealtClient */
     protected $client;
 
+    /**
+     * @param DealtClient $client
+     */
     public function __construct($client)
     {
         $this->client = $client;

@@ -6,6 +6,7 @@ use Dealt\DealtSDK\GraphQL\Types\Enum\SubmitMissionMutationFailureReason;
 
 /**
  * @property string $reason
+ * @method SubmitMissionMutationFailure fromJson()
  */
 class SubmitMissionMutationFailure extends AbstractObjectType
 {
@@ -17,9 +18,4 @@ class SubmitMissionMutationFailure extends AbstractObjectType
             'isEnum'      => true,
         ],
     ];
-
-    public static function fromJson($json): SubmitMissionMutationFailure
-    {
-        return parent::fromJson($json);
-    }
 }
