@@ -35,4 +35,4 @@ jobs:
         run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
 
       - name: Unit Tests
-        run: composer run test:unit
+        run: DEALT_TEST_API_KEY=${{ env.DEALT_TEST_API_KEY }} DEALT_TEST_OFFER_ID=${{ env.DEALT_TEST_OFFER_ID }} composer run test:unit
