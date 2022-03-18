@@ -16,7 +16,7 @@ composer require dealt/dealt-sdk
 
 ### Usage ✨
 
-##### Dealt Client initialization
+###### Dealt Client initialization
 
 Initalize the Dealt client with your api key.
 You can specify the API environment you want to target using the `DealtEnvironment` constants. Use `DealtEnvironment.TEST` for development purposes.
@@ -31,7 +31,7 @@ $client = new DealtClient([
 ]);
 ```
 
-##### Offer availability
+###### Offer availability
 
 Check if an offer is available for a given country / zipCode :
 
@@ -43,6 +43,7 @@ $offer = $client->offers->availability([
         'zipCode' => '75016',
     ]
 ]);
+
 // the result is an instance of OfferAvailabilityQuerySuccess
 $available = $offer->available;
 $netPrice = $offer->netPrice->amount;
