@@ -9,7 +9,7 @@ class MissionsQuery extends GraphQLQuery
 {
     public static $operationName       = 'missions';
     public static $operationParameters = [
-        'apiKey'  => 'String!'
+        'apiKey'  => 'String!',
     ];
     public static $operationResult = MissionsQueryResult::class;
 }

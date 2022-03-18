@@ -14,7 +14,7 @@ class MissionsQuerySuccess extends AbstractObjectType
         'mission'  => [
             'objectType'  => '[Mission!]!',
             'objectClass' => Mission::class,
-            'isArray' => true
+            'isArray'     => true,
         ],
     ];
 }
