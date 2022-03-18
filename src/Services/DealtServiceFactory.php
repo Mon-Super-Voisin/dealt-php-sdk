@@ -7,12 +7,20 @@ use Exception;
 
 class DealtServiceFactory
 {
+    /**
+     * Internal map of available dealt services.
+     *
+     * @var array<string, string>
+     */
     private static $classMap = [
         'offers'   => DealtOffers::class,
         'missions' => DealtMissions::class,
     ];
 
+    /** @var DealtClient */
     private $client;
+
+    /** @var array<string, AbstractDealtService> */
     private $services;
 
     public function __construct(DealtClient $client)
@@ -21,9 +29,12 @@ class DealtServiceFactory
         $this->services = [];
     }
 
+    /**
+     * @return string|null
+     */
     protected function getServiceClass(string $name)
     {
-        return array_key_exists($name, self::$classMap) ? self::$classMap[$name] : null;
+        return in_array($name, array_keys(self::$classMap)) ? self::$classMap[$name] : null;
     }
 
     /**
@@ -34,12 +45,17 @@ class DealtServiceFactory
     public function __get(string $name): AbstractDealtService
     {
         $serviceClass = $this->getServiceClass($name);
+
         if (null !== $serviceClass) {
             if (!array_key_exists($name, $this->services)) {
-                $this->services[$name] = new $serviceClass($this->client);
+                /** @var AbstractDealtService */
+                $serviceInstance       =  new $serviceClass($this->client);
+                $this->services[$name] = $serviceInstance;
             }
 
-            return $this->services[$name];
+            $service = $this->services[$name];
+
+            return $service;
         }
 
         throw new Exception('unknown service requested');

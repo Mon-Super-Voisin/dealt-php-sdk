@@ -18,19 +18,18 @@ class GraphQLClient
         DealtEnvironment::TEST       => 'https://api.test.dealt.fr/graphql',
     ];
 
-    /** @var string[] $HEADERS */
+    /** @var string[] */
     private static $HEADERS = ['Content-Type: application/json'];
 
-    /** @var string $apiKey */
+    /** @var string */
     public $apiKey;
 
-    /** @var string $endpoint */
+    /** @var string */
     public $endpoint;
-
 
     /**
      * @param string $apiKey Dealt API key
-     * @param string $env Dealt environment
+     * @param string $env    Dealt environment
      */
     public function __construct(string $apiKey, string $env)
     {
@@ -40,10 +39,7 @@ class GraphQLClient
 
     /**
      * Public request execution function
-     * can be used for queries or mutations
-     *
-     * @param GraphQLOperationInterface $query
-     * @return GraphQLObjectInterface
+     * can be used for queries or mutations.
      */
     public function exec(GraphQLOperationInterface $operation): GraphQLObjectInterface
     {
@@ -53,15 +49,12 @@ class GraphQLClient
         return $this->request($operation);
     }
 
-
     /**
-     * Executes a GraphQL request to the Dealt API endpoint
+     * Executes a GraphQL request to the Dealt API endpoint.
      *
-     * @param GraphQLOperationInterface $query
-     * @return GraphQLObjectInterface
      * @throws GraphQLException
      */
-    private function request(GraphQLOperationInterface $query): GraphQLObjectInterface
+    private function request(GraphQLOperationInterface $operation): GraphQLObjectInterface
     {
         try {
             $context  = stream_context_create([
@@ -69,9 +62,9 @@ class GraphQLClient
                     'method'        => 'POST',
                     'header'        => $this->merge_headers(),
                     'content'       => json_encode([
-                        'query'         => $query->toQuery(),
-                        'operationName' => $query->getOperationName(),
-                        'variables'     => $query->toQueryVariables(),
+                        'query'         => $operation->toQuery(),
+                        'operationName' => $operation->getOperationName(),
+                        'variables'     => $operation->toQueryVariables(),
                     ]),
                     'ignore_errors' => true,
                 ],
@@ -82,7 +75,7 @@ class GraphQLClient
             throw new GraphQLException($e->getMessage());
         }
 
-        return $query->parseResult($result);
+        return $operation->parseResult($result);
     }
 
     /**

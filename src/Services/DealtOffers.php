@@ -26,6 +26,7 @@ class DealtOffers extends AbstractDealtService
         $query->setQueryVar('offerId', $params['offer_id']);
         $query->setQueryVar('address', OfferAvailabilityQueryAddress::fromArray($params['address']));
 
+        /** @var OfferAvailabilityQuerySuccess|OfferAvailabilityQueryFailure */
         $result = $this->getGQLClient()->exec($query);
 
         if ($result instanceof OfferAvailabilityQueryFailure) {

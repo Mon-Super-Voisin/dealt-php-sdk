@@ -40,7 +40,7 @@ final class DealtClientTest extends TestCase
     public function testThrowsWhenGivenWrongEnvKeyType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new DealtClient(['api_key' => "", 'env' => []]);
+        new DealtClient(['api_key' => '', 'env' => []]);
     }
 
     public function testResolvesMissionsService(): void
@@ -51,7 +51,6 @@ final class DealtClientTest extends TestCase
             $client->missions
         );
     }
-
 
     public function testResolvesOffersService(): void
     {

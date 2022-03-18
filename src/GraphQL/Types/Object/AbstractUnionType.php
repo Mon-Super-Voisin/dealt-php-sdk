@@ -10,7 +10,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
     /** @var string */
     public static $unionName;
 
-    /** @var array<string, mixed> */
+    /** @var array<int, string> */
     public static $unionDefinition;
 
     public static function toFragment(): string
@@ -27,7 +27,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
 
     public static function fromJson($json): GraphQLObjectInterface
     {
-        $typename   = $json->__typename;
+        $typename   = isset($json->__typename) ? $json->__typename : '';
 
         /** @var AbstractObjectType */
         $objectType = current(

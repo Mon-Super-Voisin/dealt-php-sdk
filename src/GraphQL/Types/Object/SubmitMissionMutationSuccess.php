@@ -14,6 +14,6 @@ class SubmitMissionMutationSuccess extends AbstractObjectType
         'mission'  => [
             'objectType'  => 'Mission!',
             'objectClass' => Mission::class,
-        ]
+        ],
     ];
 }

@@ -10,6 +10,14 @@ use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
 use Dealt\DealtSDK\Utils\GraphQLFormatter;
 use Exception;
 
+/**
+ * @static @property string $operationType
+ * @static @property string $operationName
+ * @static @property array<string, mixed> $operationParameters
+ * @static @property string $operationResult
+ *
+ * @property array<string, mixed> $queryVars
+ */
 abstract class GraphQLOperation implements GraphQLOperationInterface
 {
     /** @var string */
@@ -18,33 +26,40 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
     /** @var string */
     public static $operationName;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     public static $operationParameters;
 
-    /** @var AbstractObjectType */
+    /** @var string */
     public static $operationResult;
+
+    /** @var array<string, mixed> */
+    public $queryVars;
 
     public function __construct()
     {
         $this->queryVars   = [];
     }
 
-    public static function getOperationName()
+    /**
+     * Returns the current GraphQL query/mutation name.
+     */
+    public static function getOperationName(): string
     {
-        return static::$operationName;
+        return self::$operationName;
     }
 
     /**
+     * Guard function :
      * Will throw GraphQLInvalidParametersException when a required
      * operation variable is missing in the current operation.
      *
-     * @throws
+     * @throws GraphQLInvalidParametersException
      */
-    public function validateQueryParameters()
+    public function validateQueryParameters(): void
     {
-        $params        = static::$operationParameters;
-        $operationType = static::$operationType;
-        $operationName = static::$operationName;
+        $params        = self::$operationParameters;
+        $operationType = self::$operationType;
+        $operationName = self::$operationName;
 
         foreach ($params as $param => $type) {
             $inputType = is_array($type) ? $type['inputType'] : $type;
@@ -56,29 +71,32 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
     }
 
     /**
-     * builds the body of a GraphQL query
-     * as a HEREDOC string.
+     * builds the body of the GraphQL operation.
      *
      * @return string
      */
     public static function toQuery()
     {
-        $operationType       = static::$operationType;
-        $operationName       = static::$operationName;
-        $operationResult     = static::$operationResult;
+        $operationType       = self::$operationType;
+        $operationName       = self::$operationName;
+        $operationResult     = self::$operationResult;
         $operationParameters = self::toQueryParametersDefinition();
         $queryParameters     = self::toQueryParameters();
 
         $query = "$operationType $operationName$operationParameters { $operationName({$queryParameters}) { __typename {$operationResult::toFragment()} } }";
+
         return GraphQLFormatter::formatQuery($query);
     }
 
-    protected static function toQueryParametersDefinition()
+    /**
+     * builds the GraphQL operation parameters definition.
+     */
+    protected static function toQueryParametersDefinition(): string
     {
-        $params = static::$operationParameters;
+        $params = self::$operationParameters;
 
         if (empty($params)) {
-            return "";
+            return '';
         }
 
         return '(' . array_reduce(
@@ -86,7 +104,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
             function ($accumulator, $key) use ($params) {
                 $prefix    = $accumulator != '' ? ', ' : '';
                 $type      = $params[$key];
-                $inputType = is_array($type) ? $type["inputType"] : $type;
+                $inputType = is_array($type) ? $type['inputType'] : $type;
 
                 return "$accumulator$prefix$$key: $inputType";
             },
@@ -94,9 +112,12 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         ) . ')';
     }
 
+    /**
+     * builds the GraphQL operation variable injections.
+     */
     protected static function toQueryParameters(): string
     {
-        $params = static::$operationParameters;
+        $params = self::$operationParameters;
 
         return GraphQLFormatter::formatQueryParameters(array_reduce(
             array_keys($params),
@@ -109,6 +130,12 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         ));
     }
 
+    /**
+     * Builds the variables to be passed to the body of the
+     * GraphQL operation.
+     *
+     * @return array<string, mixed>
+     */
     public function toQueryVariables(): array
     {
         $args = $this->queryVars;
@@ -136,7 +163,11 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     public function parseResult($result): GraphQLObjectInterface
     {
+        $operationName = self::$operationName;
+        $query_name    = $this->getOperationName();
+
         try {
+            /** @var object */
             $json = json_decode($result);
         } catch (Exception $e) {
             throw new GraphQLException($e->getMessage());
@@ -146,20 +177,34 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
             throw new GraphQLFailureException($json->errors[0]->message);
         }
 
-        $query_name = $this->getOperationName();
+        if (isset($json->data) && isset($json->data->$query_name)) {
+            return self::$operationResult::fromJson($json->data->$query_name);
+        }
 
-        return static::$operationResult::fromJson($json->data->$query_name);
+        throw new GraphQLException("Unable to parse result for operation $operationName");
     }
 
-    public function setApiKey(string $apiKey): self
+    /**
+     * Sets the API key variable for the current operation.
+     */
+    public function setApiKey(string $apiKey): GraphQLOperationInterface
     {
         $this->setQueryVar('apiKey', $apiKey);
 
         return $this;
     }
 
+    /**
+     * Sets a queryVar key/value pair.
+     *
+     * @param mixed $value
+     *
+     * @return self
+     */
     public function setQueryVar(string $key, $value)
     {
         $this->queryVars[$key] = $value;
+
+        return $this;
     }
 }
