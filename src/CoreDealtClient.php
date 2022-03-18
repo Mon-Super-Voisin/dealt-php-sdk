@@ -6,7 +6,7 @@ use Dealt\DealtSDK\Exceptions\InvalidArgumentException;
 use Dealt\DealtSDK\GraphQL\GraphQLClient;
 
 /**
- * Client used to send requests to Stripe's API.
+ * Client used to send requests to Dealt's API.
  *
  * @property \Dealt\DealtSDK\Services\DealtOffers   $offers
  * @property \Dealt\DealtSDK\Services\DealtMissions $missions
