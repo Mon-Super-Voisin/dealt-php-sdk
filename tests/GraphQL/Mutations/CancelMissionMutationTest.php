@@ -1,18 +1,18 @@
 <?php
 
-use Dealt\DealtSDK\GraphQL\Mutations\SubmitMissionMutation;
+use Dealt\DealtSDK\GraphQL\Mutations\CancelMissionMutation;
 use Dealt\DealtSDK\Utils\GraphQLFormatter;
 use PHPUnit\Framework\TestCase;
 
-final class SubmitMissionMutationTest extends TestCase
+final class CancelMissionMutationTest extends TestCase
 {
     public function testBuildsGraphqlFragment(): void
     {
         $mutation = <<<'GRAPHQL'
-            mutation submitMission($apiKey: String!, $offerId: UUID!, $address: SubmitMissionMutation_Address!, $customer: SubmitMissionMutation_Customer!, $webHookUrl: String) {
-                submitMission(apiKey: $apiKey, offerId: $offerId, address: $address, customer: $customer, webHookUrl: $webHookUrl) {
+            mutation cancelMission($apiKey: String!, $missionId: UUID!) {
+                cancelMission(apiKey: $apiKey, missionId: $missionId) {
                     __typename
-                    ... on SubmitMissionMutation_Success {
+                    ... on CancelMissionMutation_Success {
                         __typename
                         mission {
                             id
@@ -24,7 +24,7 @@ final class SubmitMissionMutationTest extends TestCase
                             createdAt
                         }
                     }
-                    ... on SubmitMissionMutation_Failure {
+                    ... on CancelMissionMutation_Failure {
                         __typename
                         reason
                     }
@@ -32,6 +32,6 @@ final class SubmitMissionMutationTest extends TestCase
             }
 GRAPHQL;
 
-        $this->assertEquals(GraphQLFormatter::formatQuery($mutation), GraphQLFormatter::formatQuery(SubmitMissionMutation::toQuery()));
+        $this->assertEquals(GraphQLFormatter::formatQuery($mutation), GraphQLFormatter::formatQuery(CancelMissionMutation::toQuery()));
     }
 }
