@@ -4,13 +4,20 @@ namespace Dealt\DealtSDK\Utils;
 
 class GraphQLFormatter
 {
-    public static function formatQuery(string $query)
+    /**
+     * Format query by removing new lines, spaces and tabs.
+     */
+    public static function formatQuery(string $query): string
     {
-        return trim(preg_replace('/\s\s+/', ' ', $query));
+        return trim((string) preg_replace('/\s\s+/', ' ', $query));
     }
 
-    public static function formatQueryParameters(string $queryParams)
+    /**
+     * Format parameters by stripping quotes on keys
+     * when json encoding an array object.
+     */
+    public static function formatQueryParameters(string $queryParams): string
     {
-        return trim(preg_replace('/"([^"]+)"\s*:\s*/', ' $1: ', $queryParams));
+        return trim((string) preg_replace('/"([^"]+)"\s*:\s*/', ' $1: ', $queryParams));
     }
 }

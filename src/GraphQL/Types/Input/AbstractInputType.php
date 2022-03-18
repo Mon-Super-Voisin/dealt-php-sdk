@@ -3,6 +3,7 @@
 namespace Dealt\DealtSDK\GraphQL\Types\Input;
 
 use Dealt\DealtSDK\Exceptions\GraphQLInvalidParametersException;
+use Dealt\DealtSDK\Exceptions\InvalidArgumentException;
 use Dealt\DealtSDK\GraphQL\GraphQLInputInterface;
 
 /**
@@ -47,6 +48,10 @@ abstract class AbstractInputType implements GraphQLInputInterface
 
     public static function fromArray($array): AbstractInputType
     {
+        if (!is_array($array)) {
+            throw new InvalidArgumentException();
+        }
+
         $inputClass = static::class;
         $class      = new $inputClass();
 

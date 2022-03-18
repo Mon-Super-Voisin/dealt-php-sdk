@@ -3,6 +3,7 @@
 namespace Dealt\DealtSDK\Services;
 
 use Dealt\DealtSDK\Exceptions\GraphQLFailureException;
+use Dealt\DealtSDK\GraphQL\GraphQLObjectInterface;
 use Dealt\DealtSDK\GraphQL\Mutations\SubmitMissionMutation;
 use Dealt\DealtSDK\GraphQL\Types\Input\SubmitMissionMutationAddress;
 use Dealt\DealtSDK\GraphQL\Types\Input\SubmitMissionMutationCustomer;
@@ -21,8 +22,10 @@ class DealtMissions extends AbstractDealtService
      *                                     - webhook(?string) : optional webhook url
      *
      * @throws GraphQLFailureException
+     *
+     * @return SubmitMissionMutationSuccess|SubmitMissionMutationFailure
      */
-    public function submit(array $params): SubmitMissionMutationSuccess
+    public function submit(array $params): GraphQLObjectInterface
     {
         $mutation = new SubmitMissionMutation();
         if (isset($params['offer_id'])) {
@@ -38,6 +41,7 @@ class DealtMissions extends AbstractDealtService
             $mutation->setQueryVar('webhook', $params['webhook']);
         }
 
+        /** @var SubmitMissionMutationSuccess|SubmitMissionMutationFailure */
         $result = $this->getGQLClient()->exec($mutation);
 
         if ($result instanceof SubmitMissionMutationFailure) {

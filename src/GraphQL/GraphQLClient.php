@@ -4,7 +4,6 @@ namespace Dealt\DealtSDK\GraphQL;
 
 use Dealt\DealtSDK\DealtEnvironment;
 use Dealt\DealtSDK\Exceptions\GraphQLException;
-use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
 use Exception;
 
 /**
@@ -19,31 +18,43 @@ class GraphQLClient
         DealtEnvironment::TEST       => 'https://api.test.dealt.fr/graphql',
     ];
 
+    /** @var string[] */
+    private static $HEADERS = ['Content-Type: application/json'];
+
     /** @var string */
     public $apiKey;
 
-    private static $HEADERS = ['Content-Type: application/json'];
+    /** @var string */
+    public $endpoint;
 
+    /**
+     * @param string $apiKey Dealt API key
+     * @param string $env    Dealt environment
+     */
     public function __construct(string $apiKey, string $env)
     {
         $this->apiKey   = $apiKey;
-        $this->endpoint = static::$ENDPOINTS[$env];
-    }
-
-    public function exec(GraphQLOperationInterface $query)
-    {
-        $query->setApiKey($this->apiKey);
-        $query->validateQueryParameters();
-
-        return $this->request($query);
+        $this->endpoint = self::$ENDPOINTS[$env];
     }
 
     /**
-     * Undocumented function.
+     * Public request execution function
+     * can be used for queries or mutations.
+     */
+    public function exec(GraphQLOperationInterface $operation): GraphQLObjectInterface
+    {
+        $operation->setApiKey($this->apiKey);
+        $operation->validateQueryParameters();
+
+        return $this->request($operation);
+    }
+
+    /**
+     * Executes a GraphQL request to the Dealt API endpoint.
      *
      * @throws GraphQLException
      */
-    private function request(GraphQLOperationInterface $query): AbstractObjectType
+    private function request(GraphQLOperationInterface $operation): GraphQLObjectInterface
     {
         try {
             $context  = stream_context_create([
@@ -51,9 +62,9 @@ class GraphQLClient
                     'method'        => 'POST',
                     'header'        => $this->merge_headers(),
                     'content'       => json_encode([
-                        'query'         => $query->toQuery(),
-                        'operationName' => $query->getOperationName(),
-                        'variables'     => $query->toQueryVariables(),
+                        'query'         => $operation->toQuery(),
+                        'operationName' => $operation->getOperationName(),
+                        'variables'     => $operation->toQueryVariables(),
                     ]),
                     'ignore_errors' => true,
                 ],
@@ -64,9 +75,12 @@ class GraphQLClient
             throw new GraphQLException($e->getMessage());
         }
 
-        return $query->parseResult($result);
+        return $operation->parseResult($result);
     }
 
+    /**
+     * @return string[]
+     */
     private function merge_headers(): array
     {
         return array_merge(GraphQLClient::$HEADERS, []);
