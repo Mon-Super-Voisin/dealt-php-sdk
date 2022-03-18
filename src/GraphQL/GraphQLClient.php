@@ -4,7 +4,6 @@ namespace Dealt\DealtSDK\GraphQL;
 
 use Dealt\DealtSDK\DealtEnvironment;
 use Dealt\DealtSDK\Exceptions\GraphQLException;
-use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
 use Exception;
 
 /**
@@ -19,31 +18,50 @@ class GraphQLClient
         DealtEnvironment::TEST       => 'https://api.test.dealt.fr/graphql',
     ];
 
-    /** @var string */
-    public $apiKey;
-
+    /** @var string[] $HEADERS */
     private static $HEADERS = ['Content-Type: application/json'];
 
+    /** @var string $apiKey */
+    public $apiKey;
+
+    /** @var string $endpoint */
+    public $endpoint;
+
+
+    /**
+     * @param string $apiKey Dealt API key
+     * @param string $env Dealt environment
+     */
     public function __construct(string $apiKey, string $env)
     {
         $this->apiKey   = $apiKey;
-        $this->endpoint = static::$ENDPOINTS[$env];
-    }
-
-    public function exec(GraphQLOperationInterface $query)
-    {
-        $query->setApiKey($this->apiKey);
-        $query->validateQueryParameters();
-
-        return $this->request($query);
+        $this->endpoint = self::$ENDPOINTS[$env];
     }
 
     /**
-     * Undocumented function.
+     * Public request execution function
+     * can be used for queries or mutations
      *
+     * @param GraphQLOperationInterface $query
+     * @return GraphQLObjectInterface
+     */
+    public function exec(GraphQLOperationInterface $operation): GraphQLObjectInterface
+    {
+        $operation->setApiKey($this->apiKey);
+        $operation->validateQueryParameters();
+
+        return $this->request($operation);
+    }
+
+
+    /**
+     * Executes a GraphQL request to the Dealt API endpoint
+     *
+     * @param GraphQLOperationInterface $query
+     * @return GraphQLObjectInterface
      * @throws GraphQLException
      */
-    private function request(GraphQLOperationInterface $query): AbstractObjectType
+    private function request(GraphQLOperationInterface $query): GraphQLObjectInterface
     {
         try {
             $context  = stream_context_create([
@@ -67,6 +85,9 @@ class GraphQLClient
         return $query->parseResult($result);
     }
 
+    /**
+     * @return string[]
+     */
     private function merge_headers(): array
     {
         return array_merge(GraphQLClient::$HEADERS, []);

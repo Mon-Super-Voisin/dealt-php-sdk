@@ -2,8 +2,6 @@
 
 namespace Dealt\DealtSDK\GraphQL;
 
-use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
-
 interface GraphQLOperationInterface
 {
     public function setApiKey(string $apiKey);
@@ -14,7 +12,7 @@ interface GraphQLOperationInterface
 
     public function toQueryVariables();
 
-    public function parseResult($result): AbstractObjectType;
+    public function parseResult($result): GraphQLObjectInterface;
 
     public function validateQueryParameters();
 }

@@ -134,7 +134,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      * @throws GraphQLFailureException
      * @throws GraphQLException
      */
-    public function parseResult($result): AbstractObjectType
+    public function parseResult($result): GraphQLObjectInterface
     {
         try {
             $json = json_decode($result);
