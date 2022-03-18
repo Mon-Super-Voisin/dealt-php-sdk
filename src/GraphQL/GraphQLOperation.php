@@ -69,15 +69,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         $operationParameters = self::toQueryParametersDefinition();
         $queryParameters     = self::toQueryParameters();
 
-        $query = <<<GRAPHQL
-             $operationType $operationName$operationParameters {
-                $operationName({$queryParameters}) {
-                    __typename
-                    {$operationResult::toFragment()}
-                }
-            }
-        GRAPHQL;
-
+        $query = "$operationType $operationName$operationParameters { $operationName({$queryParameters}) { __typename {$operationResult::toFragment()} } }";
         return GraphQLFormatter::formatQuery($query);
     }
 
@@ -86,7 +78,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         $params = static::$operationParameters;
 
         if (empty($params)) {
-            return '';
+            return "";
         }
 
         return '(' . array_reduce(
@@ -94,7 +86,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
             function ($accumulator, $key) use ($params) {
                 $prefix    = $accumulator != '' ? ', ' : '';
                 $type      = $params[$key];
-                $inputType = is_array($type) ? $type['inputType'] : $type;
+                $inputType = is_array($type) ? $type["inputType"] : $type;
 
                 return "$accumulator$prefix$$key: $inputType";
             },

@@ -19,12 +19,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
             /** @var AbstractObjectType */
             $subClass = $subType;
 
-            return <<<GRAPHQL
-                ... on {$subClass::$objectName} {
-                    __typename
-                    {$subClass::toFragment()}
-                }
-            GRAPHQL;
+            return "... on {$subClass::$objectName} { __typename {$subClass::toFragment()} }";
         }, static::$unionDefinition);
 
         return join("\n", $unionFragment);
