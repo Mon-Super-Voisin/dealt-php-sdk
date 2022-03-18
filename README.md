@@ -53,6 +53,13 @@ $vat = $offer->vat->amount;
 
 ### Development 👨🏼‍💻
 
+In order to run the tests you will need to export the following environment variables in your current session (or automatically source them in your .zshrc or .bashrc)
+
+```bash
+DEALT_TEST_API_KEY=your-secret-api-key
+DEALT_TEST_OFFER_ID=your-offer-id
+```
+
 ```bash
 composer lint # lint source files
 composer test:lint # ensure valid codestyle
