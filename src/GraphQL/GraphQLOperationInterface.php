@@ -23,12 +23,8 @@ interface GraphQLOperationInterface
 
     /**
      * @param string $result
-     * @return GraphQLObjectInterface
      */
     public function parseResult($result): GraphQLObjectInterface;
 
-    /**
-     * @return void
-     */
     public function validateQueryParameters(): void;
 }
