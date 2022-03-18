@@ -38,7 +38,7 @@ class DealtOffers extends AbstractDealtService
 
             return $result;
         } catch (Exception $e) {
-            throw new GraphQLException("something went wrong");
+            throw new GraphQLException('something went wrong');
         }
     }
 }

@@ -14,20 +14,19 @@ final class DealtOffersTest extends TestCase
     public function __construct()
     {
         parent::__construct();
-        $this->client = new DealtClient(['api_key' => getenv("DEALT_TEST_API_KEY"), 'env' => DealtEnvironment::TEST]);
+        $this->client = new DealtClient(['api_key' => getenv('DEALT_TEST_API_KEY'), 'env' => DealtEnvironment::TEST]);
     }
-
 
     public function testResolvesOfferAvailability(): void
     {
         $service = new DealtOffers($this->client);
 
         $result = $service->availability([
-            "offer_id" => getenv("DEALT_TEST_OFFER_ID"),
-            "address" => [
-                "country" => "France",
-                "zipCode" => "92190"
-            ]
+            'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
+            'address'  => [
+                'country' => 'France',
+                'zipCode' => '92190',
+            ],
         ]);
 
         $this->assertInstanceOf(OfferAvailabilityQuerySuccess::class, $result);
