@@ -22,7 +22,7 @@ abstract class AbstractUnionType implements GraphQLObjectInterface
             return "... on {$subClass::$objectName} { __typename {$subClass::toFragment()} }";
         }, static::$unionDefinition);
 
-        return join("\n", $unionFragment);
+        return join(" ", $unionFragment);
     }
 
     public static function fromJson($json): GraphQLObjectInterface
