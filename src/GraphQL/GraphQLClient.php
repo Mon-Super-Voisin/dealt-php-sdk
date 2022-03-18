@@ -71,6 +71,7 @@ class GraphQLClient
             ]);
 
             $result   = @file_get_contents($this->endpoint, false, $context);
+            if ($result == false) throw new Exception("something went wrong while connecting to the Dealt API");
         } catch (Exception $e) {
             throw new GraphQLException($e->getMessage());
         }
