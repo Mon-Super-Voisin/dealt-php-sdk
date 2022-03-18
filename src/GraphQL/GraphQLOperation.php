@@ -21,7 +21,7 @@ use Exception;
 abstract class GraphQLOperation implements GraphQLOperationInterface
 {
     /** @var string */
-    private static $operationType;
+    public static $operationType;
 
     /** @var string */
     public static $operationName;
@@ -45,7 +45,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     public static function getOperationName(): string
     {
-        return self::$operationName;
+        return static::$operationName;
     }
 
     /**
@@ -57,9 +57,9 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     public function validateQueryParameters(): void
     {
-        $params        = self::$operationParameters;
-        $operationType = self::$operationType;
-        $operationName = self::$operationName;
+        $params        = static::$operationParameters;
+        $operationType = static::$operationType;
+        $operationName = static::$operationName;
 
         foreach ($params as $param => $type) {
             $inputType = is_array($type) ? $type['inputType'] : $type;
@@ -77,11 +77,11 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     public static function toQuery()
     {
-        $operationType       = self::$operationType;
-        $operationName       = self::$operationName;
-        $operationResult     = self::$operationResult;
-        $operationParameters = self::toQueryParametersDefinition();
-        $queryParameters     = self::toQueryParameters();
+        $operationType       = static::$operationType;
+        $operationName       = static::$operationName;
+        $operationResult     = static::$operationResult;
+        $operationParameters = static::toQueryParametersDefinition();
+        $queryParameters     = static::toQueryParameters();
 
         $query = "$operationType $operationName$operationParameters { $operationName({$queryParameters}) { __typename {$operationResult::toFragment()} } }";
 
@@ -93,7 +93,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     protected static function toQueryParametersDefinition(): string
     {
-        $params = self::$operationParameters;
+        $params = static::$operationParameters;
 
         if (empty($params)) {
             return '';
@@ -117,7 +117,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     protected static function toQueryParameters(): string
     {
-        $params = self::$operationParameters;
+        $params = static::$operationParameters;
 
         return GraphQLFormatter::formatQueryParameters(array_reduce(
             array_keys($params),
@@ -163,7 +163,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      */
     public function parseResult($result): GraphQLObjectInterface
     {
-        $operationName = self::$operationName;
+        $operationName = static::$operationName;
         $query_name    = $this->getOperationName();
 
         try {
@@ -178,7 +178,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         }
 
         if (isset($json->data) && isset($json->data->$query_name)) {
-            return self::$operationResult::fromJson($json->data->$query_name);
+            return static::$operationResult::fromJson($json->data->$query_name);
         }
 
         throw new GraphQLException("Unable to parse result for operation $operationName");

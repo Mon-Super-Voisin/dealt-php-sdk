@@ -21,7 +21,14 @@ interface GraphQLOperationInterface
      */
     public function toQueryVariables();
 
-    public function parseResult(mixed $result): GraphQLObjectInterface;
+    /**
+     * @param string $result
+     * @return GraphQLObjectInterface
+     */
+    public function parseResult($result): GraphQLObjectInterface;
 
+    /**
+     * @return void
+     */
     public function validateQueryParameters(): void;
 }
