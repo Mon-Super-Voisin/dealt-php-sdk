@@ -56,6 +56,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
             if (is_array($definition)) {
                 $subObjectClass = $definition['objectClass'];
 
+                // enum parsing
                 if (isset($definition['isEnum']) && $definition['isEnum'] === true) {
                     $class->setProperty($key, constant("{$subObjectClass}::{$json->$key}"));
                     continue;
@@ -63,6 +64,16 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
 
                 /** @var AbstractObjectType */
                 $subClass = new $subObjectClass();
+
+                // nested array response parsing
+                if (isset($definition['isArray']) && $definition['isArray'] === true && is_array($json->$key)) {
+                    $subObjectArray = $json->$key;
+                    $class->setProperty($key, array_map(function ($obj) use ($subClass) {
+                        return $subClass->fromJson($obj);
+                    }, $subObjectArray));
+                }
+
+                // top-level object parsing
                 $class->setProperty($key, $subClass->fromJson($json->$key));
             } else {
                 $class->setProperty($key, $json->$key);
