@@ -20,4 +20,14 @@ class GraphQLFormatter
     {
         return trim((string) preg_replace('/"([^"]+)"\s*:\s*/', ' $1: ', $queryParams));
     }
+
+    public static function camelToSnakeCase(string $input): string
+    {
+        return strtolower((string)preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
+    }
+
+    public static function snakeToCamelCase(string $input): string
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $input))));
+    }
 }
