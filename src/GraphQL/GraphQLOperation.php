@@ -5,6 +5,7 @@ namespace Dealt\DealtSDK\GraphQL;
 use Dealt\DealtSDK\Exceptions\GraphQLException;
 use Dealt\DealtSDK\Exceptions\GraphQLFailureException;
 use Dealt\DealtSDK\Exceptions\GraphQLInvalidParametersException;
+use Dealt\DealtSDK\Exceptions\InvalidArgumentException;
 use Dealt\DealtSDK\GraphQL\Types\Input\AbstractInputType;
 use Dealt\DealtSDK\GraphQL\Types\Object\AbstractObjectType;
 use Dealt\DealtSDK\Utils\GraphQLFormatter;
