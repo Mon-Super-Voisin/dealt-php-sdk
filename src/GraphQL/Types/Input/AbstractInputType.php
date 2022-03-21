@@ -5,6 +5,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Input;
 use Dealt\DealtSDK\Exceptions\GraphQLInvalidParametersException;
 use Dealt\DealtSDK\Exceptions\InvalidArgumentException;
 use Dealt\DealtSDK\GraphQL\GraphQLInputInterface;
+use Dealt\DealtSDK\Utils\GraphQLFormatter;
 
 /**
  * Generic GraphQL input type class.
@@ -56,7 +57,7 @@ abstract class AbstractInputType implements GraphQLInputInterface
         $class      = new $inputClass();
 
         foreach ($array as $param => $value) {
-            $class->setProperty($param, $value);
+            $class->setProperty(GraphQLFormatter::snakeToCamelCase($param), $value);
         }
 
         return $class;
