@@ -16,7 +16,7 @@ final class DealtOffersTest extends TestCase
         parent::__construct();
         $this->client = new DealtClient([
             'api_key' => getenv('DEALT_TEST_API_KEY'),
-            'env' => DealtEnvironment::TEST
+            'env'     => DealtEnvironment::TEST,
         ]);
     }
 
@@ -26,7 +26,7 @@ final class DealtOffersTest extends TestCase
         $result  = $service->availability([
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
             'address'  => [
-                'country' => 'France',
+                'country'  => 'France',
                 'zip_code' => '92190',
             ],
         ]);

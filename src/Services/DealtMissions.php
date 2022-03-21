@@ -54,7 +54,9 @@ class DealtMissions extends AbstractDealtService
         $mutation->setQueryVar('address', SubmitMissionMutationAddress::fromArray($params['address']));
         $mutation->setQueryVar('customer', SubmitMissionMutationCustomer::fromArray($params['customer']));
 
-        if (isset($params['webhook'])) $mutation->setQueryVar('webhook', $params['webhook']);
+        if (isset($params['webhook'])) {
+            $mutation->setQueryVar('webhook', $params['webhook']);
+        }
 
         /** @var SubmitMissionMutationSuccess|SubmitMissionMutationFailure */
         $result = $this->getGQLClient()->exec($mutation);
