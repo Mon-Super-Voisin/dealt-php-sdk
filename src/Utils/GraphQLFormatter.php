@@ -23,7 +23,7 @@ class GraphQLFormatter
 
     public static function camelToSnakeCase(string $input): string
     {
-        return strtolower((string)preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
+        return strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
     }
 
     public static function snakeToCamelCase(string $input): string
