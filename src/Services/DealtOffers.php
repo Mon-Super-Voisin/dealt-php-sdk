@@ -9,6 +9,10 @@ use Dealt\DealtSDK\GraphQL\Types\Input\OfferAvailabilityQueryAddress;
 use Dealt\DealtSDK\GraphQL\Types\Object\OfferAvailabilityQueryFailure;
 use Dealt\DealtSDK\GraphQL\Types\Object\OfferAvailabilityQuerySuccess;
 
+/**
+ * DealtOffers Service :
+ * Allows checking availability for an offer.
+ */
 class DealtOffers extends AbstractDealtService
 {
     /**
