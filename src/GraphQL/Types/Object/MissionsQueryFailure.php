@@ -5,7 +5,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 use Dealt\DealtSDK\GraphQL\Types\Enum\MissionsQueryFailureReason;
 
 /**
- * @property MissionsQueryFailureReason::INVALID_API_KEY $reason
+ * @property string $reason
  *
  * @method MissionsQueryFailure fromJson()
  */

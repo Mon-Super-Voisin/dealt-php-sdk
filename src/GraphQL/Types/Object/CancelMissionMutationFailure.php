@@ -5,7 +5,7 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 use Dealt\DealtSDK\GraphQL\Types\Enum\CancelMissionMutationFailureReason;
 
 /**
- * @property CancelMissionMutationFailureReason::INVALID_API_KEY|CancelMissionMutationFailureReason::INVALID_MISSION_STATUS|CancelMissionMutationFailureReason::MISSION_NOT_FOUND $reason
+ * @property string $reason
  *
  * @method CancelMissionMutationFailure fromJson()
  */
