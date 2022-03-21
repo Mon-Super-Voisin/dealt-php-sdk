@@ -31,24 +31,76 @@ $client = new DealtClient([
 ]);
 ```
 
-###### Offer availability
+###### Checking offer availability
 
 Check if an offer is available for a given country / zipCode :
 
 ```php
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\OfferAvailabilityQuerySuccess */
 $offer = $client->offers->availability([
     'offer_id' => 'your-offer-uuid',
     'address'  => [
         'country' => 'France',
-        'zipCode' => '75016',
+        'zip_code' => '75016',
     ]
 ]);
 
-// the result is an instance of OfferAvailabilityQuerySuccess
 $available = $offer->available;
 $netPrice = $offer->netPrice->amount;
 $grossPrice = $offer->grossPrice->amount;
 $vat = $offer->vat->amount;
+```
+
+###### Get mission by id
+
+```php
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\MissionQuerySuccess */
+$result = $client->missions->get("your-mission-id");
+
+$mission = $result->mission;
+$id = $mission->id;
+$status = $mission->status;
+$offer = $mission->offer;
+```
+
+###### Get all missions
+
+```php
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\MissionsQuerySuccess */
+$result = $client->missions->all();
+
+$missions = $result->missions;
+```
+
+###### Submitting a mission
+
+```php
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\SubmitMissionMutationSuccess */
+$result = $client->missions->submit([
+    "offer_id" => "your-offer-id",
+    "address" => [
+        "country" => "France",
+        "zip_code" => "92190"
+    ],
+    "customer" => [
+        "first_name" => "John",
+        "last_name" => "Doe",
+        "email_address" => "xxx@yyy.zzz",
+        "phone_number" => "+33700000000"
+    ]
+]);
+
+$mission = $result->mission;
+```
+
+###### Canceling a mission
+
+```php
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\CancelMissionMutationSuccess */
+$result = $client->missions->cancel("your-mission-id");
+
+$mission = $result->mission;
+$status = $result->status;
 ```
 
 ### Development 👨🏼‍💻
@@ -72,7 +124,7 @@ composer test:unit # phpunit tests
 | GraphQL Operation     | operation type | supported |
 | --------------------- | -------------- | --------- |
 | **offerAvailability** | _query_        | ✅        |
-| **missions**          | _query_        | ⚙️        |
-| **mission**           | _query_        | ⚙️        |
+| **missions**          | _query_        | ✅        |
+| **mission**           | _query_        | ✅        |
 | **submitMission**     | _mutation_     | ✅        |
-| **cancelMission**     | _mutation_     | ⚙️        |
+| **cancelMission**     | _mutation_     | ✅        |
