@@ -29,10 +29,12 @@ abstract class AbstractDealtService
 
     /**
      * Generic validation function used by services executing GraphQL operations.
+     *
      * @todo validate types as well
      *
      * @param array<string, mixed> $params
-     * @param GraphQLOperation $operation
+     * @param GraphQLOperation     $operation
+     *
      * @throws InvalidArgumentException
      */
     public static function validateParameters($params, $operation): void
@@ -48,24 +50,33 @@ abstract class AbstractDealtService
 
     /**
      * Recursively validates operation parameters provided as snake case
-     * against the GraphQL input definitions (usually camel case)
+     * against the GraphQL input definitions (usually camel case).
      *
      * @param array<string, mixed> $params
      * @param array<string, mixed> $inputParameters
-     * @param string $paramPath
+     * @param string               $paramPath
      *
      * @throws InvalidArgumentException
-     * @return void
      */
-    private static function validateInputParameters($params, $inputParameters, $paramPath = ""): void
+    private static function validateInputParameters($params, $inputParameters, $paramPath = ''): void
     {
+        /* Reject unsupported parameters */
+        foreach (array_keys($params) as $key) {
+            if (!array_key_exists(GraphQLFormatter::snakeToCamelCase($key), $inputParameters)) {
+                throw new InvalidArgumentException("unsupported parameter \$params{$paramPath}[\"$key\"]");
+            }
+        }
+
+        /* validate required params */
         foreach ($inputParameters as $key => $inputDefinition) {
-            if ($key == "apiKey") continue;
+            if ($key == 'apiKey') {
+                continue;
+            }
 
             /** @var string */
             $inputType = is_array($inputDefinition) ? $inputDefinition['inputType'] : $inputDefinition;
-            $required = str_ends_with($inputType, '!');
-            $paramKey = GraphQLFormatter::camelToSnakeCase($key);
+            $required  = str_ends_with($inputType, '!');
+            $paramKey  = GraphQLFormatter::camelToSnakeCase($key);
 
             if ($required && (!array_key_exists($paramKey, $params) || !isset($params[$paramKey]))) {
                 throw new InvalidArgumentException("missing \$params{$paramPath}[\"$paramKey\"]");
@@ -74,6 +85,7 @@ abstract class AbstractDealtService
             if ($required && is_array($inputDefinition)) {
                 /** @var array<string, mixed> */
                 $subParams = $params[$paramKey];
+
                 /** @var AbstractInputType */
                 $subTypeKeys = $inputDefinition['inputClass'];
                 self::validateInputParameters($subParams, $subTypeKeys::$inputDefinition, "{$paramPath}[\"{$paramKey}\"]");
