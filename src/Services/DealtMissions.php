@@ -29,7 +29,7 @@ class DealtMissions extends AbstractDealtService
      *
      * @throws GraphQLFailureException
      */
-    public function id(string $mission_id): MissionQuerySuccess
+    public function get(string $mission_id): MissionQuerySuccess
     {
         $query = new MissionQuery();
         self::validateParameters(['mission_id' => $mission_id], $query);
