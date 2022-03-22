@@ -46,6 +46,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
         $objectClass = static::class;
         $definitions = static::$objectDefinition;
 
+        /** @var GraphQLObjectInterface */
         $class      = new $objectClass();
 
         foreach ($definitions as $key => $definition) {
@@ -68,18 +69,42 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
                 // nested array response parsing
                 if (isset($definition['isArray']) && $definition['isArray'] === true && is_array($json->$key)) {
                     $subObjectArray = $json->$key;
-                    $class->setProperty($key, array_map(function ($obj) use ($subClass) {
+
+                    $class->setProperty($_key, array_map(function ($obj) use ($subClass) {
                         return $subClass->fromJson($obj);
                     }, $subObjectArray));
+                } else {
+                    // top-level object parsing
+                    $class->setProperty($_key, $subClass->fromJson($json->$key));
                 }
-
-                // top-level object parsing
-                $class->setProperty($key, $subClass->fromJson($json->$key));
             } else {
-                $class->setProperty($key, $json->$key);
+                $class->setProperty($_key, $json->$key);
             }
         }
 
         return $class;
+    }
+
+    public function serialize()
+    {
+        $definitions = static::$objectDefinition;
+
+        $keys = array_map(function ($key, $definition) {
+            if (isset($definition['proxy'])) {
+                return $definition['proxy'];
+            }
+
+            return $key;
+        }, array_keys($definitions), $definitions);
+
+        $obj = [];
+
+        foreach ($keys as $key) {
+            if (isset($this->$key)) {
+                $obj[$key] = $this->$key;
+            }
+        }
+
+        return json_encode($obj);
     }
 }
