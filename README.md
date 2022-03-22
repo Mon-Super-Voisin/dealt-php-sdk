@@ -46,29 +46,37 @@ $offer = $client->offers->availability([
 ]);
 
 $available = $offer->available;
-$netPrice = $offer->netPrice->amount;
-$grossPrice = $offer->grossPrice->amount;
-$vat = $offer->vat->amount;
+
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
+$netPrice = $offer->net_price;
+
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
+$grossPrice = $offer->gross_price;
+
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
+$vat = $offer->vat_price;
 ```
 
-###### Get mission by id
+###### Getting a mission by id
 
 ```php
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\MissionQuerySuccess */
 $result = $client->missions->get("your-mission-id");
 
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Mission */
 $mission = $result->mission;
-$id = $mission->id;
-$status = $mission->status;
+
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Offer */
 $offer = $mission->offer;
 ```
 
-###### Get all missions
+###### Getting all missions
 
 ```php
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\MissionsQuerySuccess */
 $result = $client->missions->all();
 
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Mission[] */
 $missions = $result->missions;
 ```
 
@@ -87,9 +95,11 @@ $result = $client->missions->submit([
         "last_name" => "Doe",
         "email_address" => "xxx@yyy.zzz",
         "phone_number" => "+33700000000"
-    ]
+    ],
+    "webhook" => "https://optional.webhook.url"
 ]);
 
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Mission */
 $mission = $result->mission;
 ```
 
@@ -99,9 +109,36 @@ $mission = $result->mission;
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\CancelMissionMutationSuccess */
 $result = $client->missions->cancel("your-mission-id");
 
+/** @var Dealt\DealtSDK\GraphQL\Types\Object\Mission */
 $mission = $result->mission;
-$status = $result->status;
 ```
+
+###### Return types
+
+Common return types you will encounter while interacting with the Dealt PHP SDK :
+
+**Dealt\DealtSDK\GraphQL\Types\Object\Mission**
+
+| property       | type                                           |
+| -------------- | ---------------------------------------------- |
+| **id**         | string                                         |
+| **offer**      | Dealt\\DealtSDK\\GraphQL\\Types\\Object\\Offer |
+| **status**     | string                                         |
+| **created_at** | string                                         |
+
+**Dealt\DealtSDK\GraphQL\Types\Object\Offer**
+
+| property | type   |
+| -------- | ------ |
+| **id**   | string |
+| **name** | string |
+
+**Dealt\DealtSDK\GraphQL\Types\Object\Money**
+
+| property          | type   |
+| ----------------- | ------ |
+| **currency_code** | string |
+| **amount**        | float  |
 
 ### Development 👨🏼‍💻
 
