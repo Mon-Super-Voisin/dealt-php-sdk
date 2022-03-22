@@ -48,6 +48,7 @@ class GraphQLClient
             $operation->validateQueryParameters();
 
             $result = $this->request($operation);
+
             return $operation->parseResult($result);
         } catch (Exception $e) {
             throw new GraphQLException($e->getMessage());
@@ -79,7 +80,6 @@ class GraphQLClient
         if ($result == false) {
             throw new Exception('something went wrong while connecting to the Dealt API');
         }
-
 
         return $result;
     }
