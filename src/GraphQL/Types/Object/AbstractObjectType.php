@@ -33,8 +33,11 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
 
     public function setProperty($key, $value): GraphQLObjectInterface
     {
-        $definitions = array_keys(static::$objectDefinition);
-        if (in_array($key, $definitions)) {
+        $definitions = static::$objectDefinition;
+
+        if (in_array($key, array_keys($definitions)) || array_reduce($definitions, function ($hasProxyKey, $definition) use ($key) {
+            return $hasProxyKey || (isset($definition['proxy']) && $definition['proxy'] == $key);
+        }, false)) {
             $this->$key = $value;
         }
 
@@ -54,12 +57,15 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
                 continue;
             }
 
+            /** @var string */
+            $_key = isset($definition['proxy']) ? $definition['proxy'] : $key;
+
             if (is_array($definition)) {
                 $subObjectClass = $definition['objectClass'];
 
                 // enum parsing
                 if (isset($definition['isEnum']) && $definition['isEnum'] === true) {
-                    $class->setProperty($key, constant("{$subObjectClass}::{$json->$key}"));
+                    $class->setProperty($_key, constant("{$subObjectClass}::{$json->$key}"));
                     continue;
                 }
 
