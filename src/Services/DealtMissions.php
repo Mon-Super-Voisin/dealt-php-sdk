@@ -120,7 +120,7 @@ class DealtMissions extends AbstractDealtService
     public function cancel(string $mission_id): CancelMissionMutationSuccess
     {
         $mutation = new CancelMissionMutation();
-        $mutation->setQueryVar('mission_id', $mission_id);
+        $mutation->setQueryVar('missionId', $mission_id);
 
         /** @var CancelMissionMutationSuccess|CancelMissionMutationFailure */
         $result = $this->getGQLClient()->exec($mutation);
