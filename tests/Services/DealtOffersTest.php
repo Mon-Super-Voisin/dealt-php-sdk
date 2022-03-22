@@ -22,36 +22,36 @@ final class DealtOffersTest extends TestCase
             'env'     => DealtEnvironment::TEST,
         ]);
 
-        $this->graphQLClientStub = $this->createPartialMock(GraphQLClient::class, ["request"]);
+        $this->graphQLClientStub         = $this->createPartialMock(GraphQLClient::class, ['request']);
         $this->graphQLClientStub->apiKey = getenv('DEALT_TEST_API_KEY');
-        $this->client->gqlClient = $this->graphQLClientStub;
+        $this->client->gqlClient         = $this->graphQLClientStub;
     }
 
     public function testResolvesOfferAvailability(): void
     {
-        $service = new DealtOffers($this->client);
+        $service  = new DealtOffers($this->client);
         $response = strval(json_encode([
-            "data" => [
-                "offerAvailability" => [
-                    "__typename" => "OfferAvailabilityQuery_Success",
-                    "available" => true,
-                    "netPrice" => [
-                        "amount" => 70,
-                        "currencyCode" => "EUR"
+            'data' => [
+                'offerAvailability' => [
+                    '__typename' => 'OfferAvailabilityQuery_Success',
+                    'available'  => true,
+                    'netPrice'   => [
+                        'amount'       => 70,
+                        'currencyCode' => 'EUR',
                     ],
-                    "grossPrice" => [
-                        "amount" => 84,
-                        "currencyCode" => "EUR"
+                    'grossPrice' => [
+                        'amount'       => 84,
+                        'currencyCode' => 'EUR',
                     ],
-                    "vat" => [
-                        "amount" => 14,
-                        "currencyCode" => "EUR"
-                    ]
-                ]
-            ]
+                    'vat' => [
+                        'amount'       => 14,
+                        'currencyCode' => 'EUR',
+                    ],
+                ],
+            ],
         ]));
 
-        $this->graphQLClientStub->expects($this->once())->method("request")->willReturn($response);
+        $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
 
         $result  = $service->availability([
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
@@ -68,17 +68,17 @@ final class DealtOffersTest extends TestCase
     {
         $this->expectException(GraphQLFailureException::class);
 
-        $service = new DealtOffers($this->client);
+        $service  = new DealtOffers($this->client);
         $response = strval(json_encode([
-            "data" => [
-                "offerAvailability" => [
-                    "__typename" => "OfferAvailabilityQuery_Failure",
-                    "reason" => "OFFER_NOT_FOUND"
-                ]
-            ]
+            'data' => [
+                'offerAvailability' => [
+                    '__typename' => 'OfferAvailabilityQuery_Failure',
+                    'reason'     => 'OFFER_NOT_FOUND',
+                ],
+            ],
         ]));
 
-        $this->graphQLClientStub->expects($this->once())->method("request")->willReturn($response);
+        $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
 
         $service->availability([
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
