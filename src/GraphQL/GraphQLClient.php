@@ -43,42 +43,45 @@ class GraphQLClient
      */
     public function exec(GraphQLOperationInterface $operation): GraphQLObjectInterface
     {
-        $operation->setApiKey($this->apiKey);
-        $operation->validateQueryParameters();
+        try {
+            $operation->setApiKey($this->apiKey);
+            $operation->validateQueryParameters();
 
-        return $this->request($operation);
+            $result = $this->request($operation);
+            return $operation->parseResult($result);
+        } catch (Exception $e) {
+            throw new GraphQLException($e->getMessage());
+        }
     }
 
     /**
      * Executes a GraphQL request to the Dealt API endpoint.
      *
-     * @throws GraphQLException
+     * @throws Exception
      */
-    private function request(GraphQLOperationInterface $operation): GraphQLObjectInterface
+    public function request(GraphQLOperationInterface $operation): string
     {
-        try {
-            $context  = stream_context_create([
-                'http' => [
-                    'method'        => 'POST',
-                    'header'        => $this->merge_headers(),
-                    'content'       => json_encode([
-                        'query'         => $operation->toQuery(),
-                        'operationName' => $operation->getOperationName(),
-                        'variables'     => $operation->toQueryVariables(),
-                    ]),
-                    'ignore_errors' => true,
-                ],
-            ]);
+        $context  = stream_context_create([
+            'http' => [
+                'method'        => 'POST',
+                'header'        => $this->merge_headers(),
+                'content'       => json_encode([
+                    'query'         => $operation->toQuery(),
+                    'operationName' => $operation->getOperationName(),
+                    'variables'     => $operation->toQueryVariables(),
+                ]),
+                'ignore_errors' => true,
+            ],
+        ]);
 
-            $result   = @file_get_contents($this->endpoint, false, $context);
-            if ($result == false) {
-                throw new Exception('something went wrong while connecting to the Dealt API');
-            }
-        } catch (Exception $e) {
-            throw new GraphQLException($e->getMessage());
+        $result   = @file_get_contents($this->endpoint, false, $context);
+
+        if ($result == false) {
+            throw new Exception('something went wrong while connecting to the Dealt API');
         }
 
-        return $operation->parseResult($result);
+
+        return $result;
     }
 
     /**
