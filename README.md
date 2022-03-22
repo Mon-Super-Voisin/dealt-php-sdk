@@ -48,13 +48,13 @@ $offer = $client->offers->availability([
 $available = $offer->available;
 
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
-$netPrice = $offer->net_price;
+$net_price = $offer->net_price;
 
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
-$grossPrice = $offer->gross_price;
+$gross_price = $offer->gross_price;
 
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\Money */
-$vat = $offer->vat_price;
+$vat_price = $offer->vat_price;
 ```
 
 ###### Getting a mission by id
@@ -141,13 +141,6 @@ Common return types you will encounter while interacting with the Dealt PHP SDK 
 | **amount**        | float  |
 
 ### Development 👨🏼‍💻
-
-In order to run the tests you will need to export the following environment variables in your current session (or automatically source them in your .zshrc or .bashrc)
-
-```bash
-DEALT_TEST_API_KEY=your-secret-api-key
-DEALT_TEST_OFFER_ID=your-offer-id
-```
 
 ```bash
 composer lint # lint source files

@@ -19,12 +19,12 @@ final class DealtOffersTest extends TestCase
     {
         parent::__construct();
         $this->client = new DealtClient([
-            'api_key' => getenv('DEALT_TEST_API_KEY'),
+            'api_key' => 'test-api-key',
             'env'     => DealtEnvironment::TEST,
         ]);
 
         $this->graphQLClientStub         = $this->createPartialMock(GraphQLClient::class, ['request']);
-        $this->graphQLClientStub->apiKey = getenv('DEALT_TEST_API_KEY');
+        $this->graphQLClientStub->apiKey = 'test-api-key';
         $this->client->gqlClient         = $this->graphQLClientStub;
     }
 
@@ -55,7 +55,7 @@ final class DealtOffersTest extends TestCase
         $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
 
         $result  = $service->availability([
-            'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
+            'offer_id' => 'offer-uuid-0001',
             'address'  => [
                 'country'  => 'France',
                 'zip_code' => '92190',
@@ -94,7 +94,7 @@ final class DealtOffersTest extends TestCase
         $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
 
         $service->availability([
-            'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
+            'offer_id' => 'offer-uuid-0001',
             'address'  => [
                 'country'  => 'France',
                 'zip_code' => '92190',

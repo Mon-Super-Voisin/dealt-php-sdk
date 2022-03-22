@@ -127,7 +127,7 @@ final class DealtMissionsTest extends TestCase
         $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
 
         $result  = $service->submit([
-            'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
+            'offer_id' => 'offer-uuid-0001',
             'address'  => [
                 'country'  => 'France',
                 'zip_code' => '92190',
