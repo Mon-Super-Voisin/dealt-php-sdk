@@ -9,7 +9,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
     /** @var string */
     public static $objectName;
 
-    /** @var array<string, mixed> */
+    /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectType: string, objectClass: string }> */
     public static $objectDefinition;
 
     public static function toFragment(): string
@@ -33,6 +33,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
 
     public function setProperty($key, $value): GraphQLObjectInterface
     {
+        /** @var array<string, array{ proxy?: string }> */
         $definitions = static::$objectDefinition;
 
         if (in_array($key, array_keys($definitions)) || array_reduce($definitions, function ($hasProxyKey, $definition) use ($key) {
@@ -47,6 +48,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
     public static function fromJson($json): GraphQLObjectInterface
     {
         $objectClass = static::class;
+        /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectClass: string }> */
         $definitions = static::$objectDefinition;
 
         /** @var GraphQLObjectInterface */
@@ -58,7 +60,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
             }
 
             /** @var string */
-            $_key = isset($definition['proxy']) ? $definition['proxy'] : $key;
+            $_key = is_array($definition) && isset($definition['proxy']) ? $definition['proxy'] : $key;
 
             if (is_array($definition)) {
                 $subObjectClass = $definition['objectClass'];
@@ -91,12 +93,13 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
         return $class;
     }
 
-    public function serialize()
+    public function serialize(): string
     {
+        /** @var array<string, string|array{ proxy?: string }> */
         $definitions = static::$objectDefinition;
 
         $keys = array_map(function ($key, $definition) {
-            if (isset($definition['proxy'])) {
+            if (is_array($definition) && isset($definition['proxy'])) {
                 return $definition['proxy'];
             }
 
@@ -111,6 +114,6 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
             }
         }
 
-        return json_encode($obj);
+        return strval(json_encode($obj));
     }
 }

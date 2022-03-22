@@ -166,19 +166,19 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
         $operationName = static::$operationName;
         $query_name    = $this->getOperationName();
 
-        try {
-            /** @var object */
-            $json = json_decode($result);
-        } catch (Exception $e) {
-            throw new GraphQLException($e->getMessage());
-        }
+        /** @var object */
+        $json = json_decode($result);
 
         if (isset($json->errors)) {
             throw new GraphQLFailureException($json->errors[0]->message);
         }
 
         if (isset($json->data) && isset($json->data->$query_name)) {
-            return static::$operationResult::fromJson($json->data->$query_name);
+            try {
+                return static::$operationResult::fromJson($json->data->$query_name);
+            } catch (Exception $e) {
+                throw new GraphQLException("Unable to parse result for operation $operationName ({$e->getMessage()})");
+            }
         }
 
         throw new GraphQLException("Unable to parse result for operation $operationName");
