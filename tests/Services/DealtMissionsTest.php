@@ -4,10 +4,12 @@ use Dealt\DealtSDK\DealtClient;
 use Dealt\DealtSDK\DealtEnvironment;
 use Dealt\DealtSDK\GraphQL\GraphQLClient;
 use Dealt\DealtSDK\GraphQL\Types\Enum\MissionStatus;
+use Dealt\DealtSDK\GraphQL\Types\Object\CancelMissionMutationSuccess;
 use Dealt\DealtSDK\GraphQL\Types\Object\Mission;
 use Dealt\DealtSDK\GraphQL\Types\Object\MissionQuerySuccess;
 use Dealt\DealtSDK\GraphQL\Types\Object\MissionsQuerySuccess;
 use Dealt\DealtSDK\GraphQL\Types\Object\Offer;
+use Dealt\DealtSDK\GraphQL\Types\Object\SubmitMissionMutationSuccess;
 use Dealt\DealtSDK\Services\DealtMissions;
 use PHPUnit\Framework\TestCase;
 
@@ -73,8 +75,6 @@ final class DealtMissionsTest extends TestCase
         $this->assertInstanceOf(Mission::class, $result->missions[1]);
         $this->assertInstanceOf(Offer::class, $result->missions[1]->offer);
         $this->assertEquals(MissionStatus::DRAFT, $result->missions[1]->status);
-
-        echo json_encode($result);
     }
 
     public function testMissionQueryOnSuccessfulResponse(): void
@@ -103,24 +103,70 @@ final class DealtMissionsTest extends TestCase
         $this->assertInstanceOf(MissionQuerySuccess::class, $result);
     }
 
-    // public function testSubmitMission(): void
-    // {
-    //     $service = new DealtMissions($this->client);
+    public function testSubmitMissionMutation(): void
+    {
+        $service = new DealtMissions($this->client);
 
-    //     $result  = $service->submit([
-    //         'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
-    //         'address'  => [
-    //             'country'  => 'France',
-    //             'zip_code' => '92190',
-    //         ],
-    //         'customer' => [
-    //             'first_name'    => 'Jean',
-    //             'last_name'     => 'Dupont',
-    //             'email_address' => 'xxx@yyy.zzz',
-    //             'phone_number'  => '+33600000000',
-    //         ],
-    //     ]);
+        $response = strval(json_encode([
+            'data' => [
+                'submitMission' => [
+                    '__typename' => 'SubmitMissionMutation_Success',
+                    'mission'    => [
+                        'id'        => 'mission-uuid-0001',
+                        'status'    => 'SUBMITTED',
+                        'createdAt' => '2022-03-22T08:18:02.278Z',
+                        'offer'     => [
+                            'id'   => 'offer-uuid-0001',
+                            'name' => 'offer 0001',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
 
-    //     $result->$this->assertInstanceOf(SubmitMissionMutationSuccess::class, $result);
-    // }
+        $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
+
+        $result  = $service->submit([
+            'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
+            'address'  => [
+                'country'  => 'France',
+                'zip_code' => '92190',
+            ],
+            'customer' => [
+                'first_name'    => 'Jean',
+                'last_name'     => 'Dupont',
+                'email_address' => 'xxx@yyy.zzz',
+                'phone_number'  => '+33600000000',
+            ],
+        ]);
+
+        $this->assertInstanceOf(SubmitMissionMutationSuccess::class, $result);
+    }
+
+    public function testCancelMissionMutation(): void
+    {
+        $service = new DealtMissions($this->client);
+
+        $response = strval(json_encode([
+            'data' => [
+                'cancelMission' => [
+                    '__typename' => 'CancelMissionMutation_Success',
+                    'mission'    => [
+                        'id'        => 'mission-uuid-0001',
+                        'status'    => 'CANCELED',
+                        'createdAt' => '2022-03-22T08:18:02.278Z',
+                        'offer'     => [
+                            'id'   => 'offer-uuid-0001',
+                            'name' => 'offer 0001',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+
+        $this->graphQLClientStub->expects($this->once())->method('request')->willReturn($response);
+
+        $result  = $service->cancel('mission-uuid-0001');
+        $this->assertInstanceOf(CancelMissionMutationSuccess::class, $result);
+    }
 }
