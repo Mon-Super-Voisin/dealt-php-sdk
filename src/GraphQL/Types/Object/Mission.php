@@ -5,10 +5,10 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 use Dealt\DealtSDK\GraphQL\Types\Enum\MissionStatus;
 
 /**
- * @property string                                                                                                            $id
- * @property Offer                                                                                                             $offer
- * @property string                                                                                                            $createdAt
- * @property MissionStatus::DRAFT|MissionStatus::SUBMITTED|MissionStatus::CANCELED|MissionStatus::ACCEPTED|MissionStatus::DONE $status
+ * @property string $id
+ * @property Offer  $offer
+ * @property string $created_at
+ * @property string $status
  *
  * @method Mission fromJson()
  */
@@ -27,6 +27,9 @@ class Mission extends AbstractObjectType
             'objectClass' => MissionStatus::class,
             'isEnum'      => true,
         ],
-        'createdAt' => 'DateTime!',
+        'createdAt' => [
+            'objectType' => 'DateTime!',
+            'proxy'      => 'created_at',
+        ],
     ];
 }

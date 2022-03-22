@@ -4,9 +4,9 @@ namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
  * @property bool  $available
- * @property Money $netPrice
- * @property Money $grossPrice
- * @property Money $vat
+ * @property Money $net_price
+ * @property Money $gross_price
+ * @property Money $vat_price
  *
  * @method OfferAvailabilityQuerySuccess fromJson()
  */
@@ -18,14 +18,17 @@ class OfferAvailabilityQuerySuccess extends AbstractObjectType
         'netPrice'  => [
             'objectType'  => 'Money!',
             'objectClass' => Money::class,
+            'proxy'       => 'net_price',
         ],
         'grossPrice' => [
             'objectType'  => 'Money!',
             'objectClass' => Money::class,
+            'proxy'       => 'gross_price',
         ],
         'vat' => [
             'objectType'  => 'Money!',
             'objectClass' => Money::class,
+            'proxy'       => 'vat_price',
         ],
     ];
 }

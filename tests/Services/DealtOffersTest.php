@@ -5,6 +5,7 @@ use Dealt\DealtSDK\DealtEnvironment;
 use Dealt\DealtSDK\Exceptions\GraphQLFailureException;
 use Dealt\DealtSDK\Exceptions\InvalidArgumentException;
 use Dealt\DealtSDK\GraphQL\GraphQLClient;
+use Dealt\DealtSDK\GraphQL\Types\Object\Money;
 use Dealt\DealtSDK\GraphQL\Types\Object\OfferAvailabilityQuerySuccess;
 use Dealt\DealtSDK\Services\DealtOffers;
 use PHPUnit\Framework\TestCase;
@@ -62,6 +63,18 @@ final class DealtOffersTest extends TestCase
         ]);
 
         $this->assertInstanceOf(OfferAvailabilityQuerySuccess::class, $result);
+
+        $this->assertInstanceOf(Money::class, $result->gross_price);
+        $this->assertEquals(84, $result->gross_price->amount);
+        $this->assertEquals('EUR', $result->gross_price->currency_code);
+
+        $this->assertInstanceOf(Money::class, $result->net_price);
+        $this->assertEquals(70, $result->net_price->amount);
+        $this->assertEquals('EUR', $result->net_price->currency_code);
+
+        $this->assertInstanceOf(Money::class, $result->vat_price);
+        $this->assertEquals(14, $result->vat_price->amount);
+        $this->assertEquals('EUR', $result->vat_price->currency_code);
     }
 
     public function testThrowsOnAvailabilityFailure(): void

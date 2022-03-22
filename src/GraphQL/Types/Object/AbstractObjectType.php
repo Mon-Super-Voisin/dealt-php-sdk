@@ -9,7 +9,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
     /** @var string */
     public static $objectName;
 
-    /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectType: string, objectClass: string }> */
+    /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectType: string, objectClass?: string }> */
     public static $objectDefinition;
 
     public static function toFragment(): string
@@ -18,7 +18,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
         $fragments   = [];
 
         foreach ($definitions as $key => $definition) {
-            if (is_array($definition) && (!isset($definition['isEnum']) || $definition['isEnum'] !== true)) {
+            if (is_array($definition) && isset($definition['objectClass']) && (!isset($definition['isEnum']) || $definition['isEnum'] !== true)) {
                 /** @var AbstractObjectType|string */
                 $subType = $definition['objectClass'];
                 array_push($fragments, "$key { {$subType::toFragment()} }");
@@ -48,7 +48,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
     public static function fromJson($json): GraphQLObjectInterface
     {
         $objectClass = static::class;
-        /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectClass: string }> */
+        /** @var array<string, string|array{ proxy?: string, isEnum?: bool, isArray?: bool, objectClass?: string }> */
         $definitions = static::$objectDefinition;
 
         /** @var GraphQLObjectInterface */
@@ -62,7 +62,7 @@ abstract class AbstractObjectType implements GraphQLObjectInterface
             /** @var string */
             $_key = is_array($definition) && isset($definition['proxy']) ? $definition['proxy'] : $key;
 
-            if (is_array($definition)) {
+            if (is_array($definition) && isset($definition['objectClass'])) {
                 $subObjectClass = $definition['objectClass'];
 
                 // enum parsing
