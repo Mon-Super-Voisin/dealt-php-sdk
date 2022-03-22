@@ -3,7 +3,7 @@
 namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
- * @property Mission $missions
+ * @property Mission[] $missions
  *
  * @method MissionsQuerySuccess fromJson()
  */
@@ -15,6 +15,7 @@ class MissionsQuerySuccess extends AbstractObjectType
             'objectType'  => '[Mission!]!',
             'objectClass' => Mission::class,
             'isArray'     => true,
+            'proxy'       => 'missions', /* remove when type fixed on GraphQL API */
         ],
     ];
 }

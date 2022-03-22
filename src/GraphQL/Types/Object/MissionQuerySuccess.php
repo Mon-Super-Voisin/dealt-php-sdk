@@ -3,7 +3,7 @@
 namespace Dealt\DealtSDK\GraphQL\Types\Object;
 
 /**
- * @property Mission $missions
+ * @property Mission $mission
  *
  * @method MissionQuerySuccess fromJson()
  */
