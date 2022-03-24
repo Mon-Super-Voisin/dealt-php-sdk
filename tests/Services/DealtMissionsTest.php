@@ -11,6 +11,7 @@ use Dealt\DealtSDK\GraphQL\Types\Object\MissionsQuerySuccess;
 use Dealt\DealtSDK\GraphQL\Types\Object\Offer;
 use Dealt\DealtSDK\GraphQL\Types\Object\SubmitMissionMutationSuccess;
 use Dealt\DealtSDK\Services\DealtMissions;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class DealtMissionsTest extends TestCase
@@ -26,6 +27,7 @@ final class DealtMissionsTest extends TestCase
             'env'     => DealtEnvironment::TEST,
         ]);
 
+        /* @var MockObject */
         $this->graphQLClientStub         = $this->createPartialMock(GraphQLClient::class, ['request']);
         $this->graphQLClientStub->apiKey = 'test-api-key';
         $this->client->gqlClient         = $this->graphQLClientStub;
@@ -37,8 +39,8 @@ final class DealtMissionsTest extends TestCase
         $response = strval(json_encode([
             'data' => [
                 'missions' => [
-                    '__typename' => 'MissionsQuery_Success',
-                    'mission'    => [
+                    '__typename'  => 'MissionsQuery_Success',
+                    'missions'    => [
                         [
                             'id'        => 'mission-uuid-0001',
                             'status'    => 'SUBMITTED',
@@ -153,7 +155,7 @@ final class DealtMissionsTest extends TestCase
                     '__typename' => 'CancelMissionMutation_Success',
                     'mission'    => [
                         'id'        => 'mission-uuid-0001',
-                        'status'    => 'CANCELED',
+                        'status'    => 'CANCELLED',
                         'createdAt' => '2022-03-22T08:18:02.278Z',
                         'offer'     => [
                             'id'   => 'offer-uuid-0001',

@@ -13,7 +13,7 @@ final class GraphQLOperationTest extends TestCase
     public function testMissionQueryFragment(): void
     {
         $query = <<<'GRAPHQL'
-            query mission($apiKey: String!, $missionId: String!) {
+            query mission($apiKey: String!, $missionId: UUID!) {
                 mission(apiKey: $apiKey, missionId: $missionId) {
                     __typename
                     ... on MissionQuery_Success {
@@ -47,7 +47,7 @@ GRAPHQL;
                     __typename
                     ... on MissionsQuery_Success {
                         __typename
-                        mission {
+                        missions {
                             id
                             offer {
                                 id
