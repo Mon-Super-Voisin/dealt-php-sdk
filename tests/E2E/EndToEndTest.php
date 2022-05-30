@@ -25,7 +25,7 @@ final class EndToEndTest extends TestCase
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
             'address'  => [
                 'country'  => 'France',
-                'zip_code' => '00000',
+                'zip_code' => '92190',
             ],
         ]);
 
@@ -38,7 +38,7 @@ final class EndToEndTest extends TestCase
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
             'address'  => [
                 'country'  => 'France',
-                'zip_code' => '00000',
+                'zip_code' => '92190',
             ],
             'customer' => [
                 'first_name'    => 'Jean',
@@ -69,26 +69,26 @@ final class EndToEndTest extends TestCase
         return $missionId;
     }
 
+    // /**
+    //  * @param string $missionId
+    //  * @depends testGetMissionByIdSuccessfully
+    //  */
+    // public function testGetAllMissionsSuccessfully($missionId): string
+    // {
+    //     $result = $this->client->missions->all();
+
+    //     $mission_ids = array_map(function ($mission) {
+    //         return $mission->id;
+    //     }, $result->missions);
+
+    //     $this->assertEquals(true, in_array($missionId, $mission_ids));
+
+    //     return $missionId;
+    // }
+
     /**
      * @param string $missionId
      * @depends testGetMissionByIdSuccessfully
-     */
-    public function testGetAllMissionsSuccessfully($missionId): string
-    {
-        $result = $this->client->missions->all();
-
-        $mission_ids = array_map(function ($mission) {
-            return $mission->id;
-        }, $result->missions);
-
-        $this->assertEquals(true, in_array($missionId, $mission_ids));
-
-        return $missionId;
-    }
-
-    /**
-     * @param string $missionId
-     * @depends testGetAllMissionsSuccessfully
      */
     public function testCancelsMissionSuccessfully($missionId): void
     {
