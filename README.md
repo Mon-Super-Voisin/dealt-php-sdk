@@ -96,7 +96,8 @@ $result = $client->missions->submit([
         "email_address" => "xxx@yyy.zzz",
         "phone_number" => "+33700000000"
     ],
-    "webhook" => "https://optional.webhook.url"
+    "webHookUrl" => "https://optional.webhook.url",
+    "extraDetails" => "https://test-shop.com/optional/product.html"
 ]);
 
 /** @var Dealt\DealtSDK\GraphQL\Types\Object\Mission */
