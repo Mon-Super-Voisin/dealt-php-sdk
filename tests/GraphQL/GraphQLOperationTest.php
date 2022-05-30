@@ -104,8 +104,8 @@ GRAPHQL;
     public function testSubmitMissionMutationFragment(): void
     {
         $mutation = <<<'GRAPHQL'
-            mutation submitMission($apiKey: String!, $offerId: UUID!, $address: SubmitMissionMutation_Address!, $customer: SubmitMissionMutation_Customer!, $webHookUrl: String) {
-                submitMission(apiKey: $apiKey, offerId: $offerId, address: $address, customer: $customer, webHookUrl: $webHookUrl) {
+            mutation submitMission($apiKey: String!, $offerId: UUID!, $address: SubmitMissionMutation_Address!, $customer: SubmitMissionMutation_Customer!, $webHookUrl: String, $extraDetails: String) {
+                submitMission(apiKey: $apiKey, offerId: $offerId, address: $address, customer: $customer, webHookUrl: $webHookUrl, extraDetails: $extraDetails) {
                     __typename
                     ... on SubmitMissionMutation_Success {
                         __typename

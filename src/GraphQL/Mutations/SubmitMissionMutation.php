@@ -21,7 +21,8 @@ class SubmitMissionMutation extends GraphQLMutation
             'inputType'  => 'SubmitMissionMutation_Customer!',
             'inputClass' => SubmitMissionMutationCustomer::class,
         ],
-        'webHookUrl' => 'String',
+        'webHookUrl'   => 'String',
+        'extraDetails' => 'String',
     ];
 
     public static $operationResult = SubmitMissionMutationResult::class;

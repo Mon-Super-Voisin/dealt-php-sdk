@@ -27,7 +27,7 @@ final class DealtMissionsTest extends TestCase
             'env'     => DealtEnvironment::TEST,
         ]);
 
-        /**  @var MockObject */
+        /*  @var MockObject */
         $this->graphQLClientStub         = $this->createPartialMock(GraphQLClient::class, ['request']);
         $this->graphQLClientStub->apiKey = 'test-api-key';
         $this->client->gqlClient         = $this->graphQLClientStub;
@@ -140,6 +140,8 @@ final class DealtMissionsTest extends TestCase
                 'email_address' => 'xxx@yyy.zzz',
                 'phone_number'  => '+33600000000',
             ],
+            'webHookUrl'   => '//localhost.test',
+            'extraDetails' => 'test extra detail of product',
         ]);
 
         $this->assertInstanceOf(SubmitMissionMutationSuccess::class, $result);
