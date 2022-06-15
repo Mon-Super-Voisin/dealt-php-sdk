@@ -4,6 +4,16 @@ namespace Dealt\DealtSDK;
 
 use Dealt\DealtSDK\Services\AbstractDealtService;
 use Dealt\DealtSDK\Services\DealtServiceFactory;
+use Dealt\DealtSDK\Utils\Polyfill80;
+
+/* polyfill str_ends_with */
+
+if (!function_exists('str_ends_with')) {
+    function str_ends_with(?string $haystack, ?string $needle): bool
+    {
+        return Polyfill80::str_ends_with($haystack ?? '', $needle ?? '');
+    }
+}
 
 class DealtClient extends CoreDealtClient
 {
