@@ -37,6 +37,8 @@ class CoreDealtClient
      * @param array<string, mixed> $config the config object passed to the DealtClient constructor
      *
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     private function validateConfig($config)
     {
