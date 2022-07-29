@@ -38,7 +38,7 @@ class CoreDealtClient
      *
      * @throws InvalidArgumentException
      */
-    private function validateConfig($config): void
+    private function validateConfig($config)
     {
         if (!isset($config['api_key']) || !is_string($config['api_key'])) {
             throw new InvalidArgumentException('api_key must be a string');

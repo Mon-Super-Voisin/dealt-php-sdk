@@ -37,7 +37,7 @@ abstract class AbstractDealtService
      *
      * @throws InvalidArgumentException
      */
-    public static function validateParameters($params, $operation): void
+    public static function validateParameters($params, $operation)
     {
         $operationName   = $operation::getOperationName();
 
@@ -58,7 +58,7 @@ abstract class AbstractDealtService
      *
      * @throws InvalidArgumentException
      */
-    private static function validateInputParameters($params, $inputParameters, $paramPath = ''): void
+    private static function validateInputParameters($params, $inputParameters, $paramPath = '')
     {
         /* Reject unsupported parameters */
         foreach (array_keys($params) as $key) {

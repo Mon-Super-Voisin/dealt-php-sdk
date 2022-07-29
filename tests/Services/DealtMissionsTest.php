@@ -33,7 +33,7 @@ final class DealtMissionsTest extends TestCase
         $this->client->gqlClient         = $this->graphQLClientStub;
     }
 
-    public function testMissionsQueryOnSuccessfulResponse(): void
+    public function testMissionsQueryOnSuccessfulResponse()
     {
         $service  = new DealtMissions($this->client);
         $response = strval(json_encode([
@@ -79,7 +79,7 @@ final class DealtMissionsTest extends TestCase
         $this->assertEquals(MissionStatus::$DRAFT, $result->missions[1]->status);
     }
 
-    public function testMissionQueryOnSuccessfulResponse(): void
+    public function testMissionQueryOnSuccessfulResponse()
     {
         $service  = new DealtMissions($this->client);
         $response = strval(json_encode([
@@ -105,7 +105,7 @@ final class DealtMissionsTest extends TestCase
         $this->assertInstanceOf(MissionQuerySuccess::class, $result);
     }
 
-    public function testSubmitMissionMutation(): void
+    public function testSubmitMissionMutation()
     {
         $service = new DealtMissions($this->client);
 
@@ -147,7 +147,7 @@ final class DealtMissionsTest extends TestCase
         $this->assertInstanceOf(SubmitMissionMutationSuccess::class, $result);
     }
 
-    public function testCancelMissionMutation(): void
+    public function testCancelMissionMutation()
     {
         $service = new DealtMissions($this->client);
 

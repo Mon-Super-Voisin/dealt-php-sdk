@@ -19,7 +19,7 @@ final class EndToEndTest extends TestCase
         parent::__construct();
     }
 
-    public function testChecksOfferAvailability(): void
+    public function testChecksOfferAvailability()
     {
         $result = $this->client->offers->availability([
             'offer_id' => getenv('DEALT_TEST_OFFER_ID'),
@@ -90,7 +90,7 @@ final class EndToEndTest extends TestCase
      * @param string $missionId
      * @depends testGetMissionByIdSuccessfully
      */
-    public function testCancelsMissionSuccessfully($missionId): void
+    public function testCancelsMissionSuccessfully($missionId)
     {
         $result = $this->client->missions->cancel($missionId);
 

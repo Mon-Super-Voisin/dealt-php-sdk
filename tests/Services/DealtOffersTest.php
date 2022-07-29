@@ -30,7 +30,7 @@ final class DealtOffersTest extends TestCase
         $this->client->gqlClient         = $this->graphQLClientStub;
     }
 
-    public function testResolvesOfferAvailability(): void
+    public function testResolvesOfferAvailability()
     {
         $service  = new DealtOffers($this->client);
         $response = strval(json_encode([
@@ -79,7 +79,7 @@ final class DealtOffersTest extends TestCase
         $this->assertEquals('EUR', $result->vat_price->currency_code);
     }
 
-    public function testThrowsOnAvailabilityFailure(): void
+    public function testThrowsOnAvailabilityFailure()
     {
         $this->expectException(GraphQLFailureException::class);
 
@@ -104,7 +104,7 @@ final class DealtOffersTest extends TestCase
         ]);
     }
 
-    public function testShouldThrowWhenOfferAvailabilityProvidedInconsistentParams(): void
+    public function testShouldThrowWhenOfferAvailabilityProvidedInconsistentParams()
     {
         $this->expectException(InvalidArgumentException::class);
 

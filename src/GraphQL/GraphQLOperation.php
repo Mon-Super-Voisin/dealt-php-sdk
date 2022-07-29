@@ -55,7 +55,7 @@ abstract class GraphQLOperation implements GraphQLOperationInterface
      *
      * @throws GraphQLInvalidParametersException
      */
-    public function validateQueryParameters(): void
+    public function validateQueryParameters()
     {
         $params        = static::$operationParameters;
         $operationType = static::$operationType;
