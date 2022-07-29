@@ -21,7 +21,7 @@ final class DealtOffersTest extends TestCase
         parent::__construct();
         $this->client = new DealtClient([
             'api_key' => 'test-api-key',
-            'env'     => DealtEnvironment::TEST,
+            'env'     => DealtEnvironment::$TEST,
         ]);
 
         /*  @var MockObject */

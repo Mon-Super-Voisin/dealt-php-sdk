@@ -13,7 +13,7 @@ final class EndToEndTest extends TestCase
     {
         $this->client = new DealtClient([
             'api_key' => getenv('DEALT_TEST_API_KEY'),
-            'env'     => DealtEnvironment::TEST,
+            'env'     => DealtEnvironment::$TEST,
         ]);
 
         parent::__construct();
@@ -63,7 +63,7 @@ final class EndToEndTest extends TestCase
         $result = $this->client->missions->get($missionId);
 
         $this->assertEquals($missionId, $result->mission->id);
-        $this->assertEquals(MissionStatus::SUBMITTED, $result->mission->status);
+        $this->assertEquals(MissionStatus::$SUBMITTED, $result->mission->status);
         $this->assertEquals(getenv('DEALT_TEST_OFFER_ID'), $result->mission->offer->id);
 
         return $missionId;
@@ -95,6 +95,6 @@ final class EndToEndTest extends TestCase
         $result = $this->client->missions->cancel($missionId);
 
         $this->assertEquals($missionId, $result->mission->id);
-        $this->assertEquals(MissionStatus::CANCELLED, $result->mission->status);
+        $this->assertEquals(MissionStatus::$CANCELLED, $result->mission->status);
     }
 }

@@ -27,7 +27,7 @@ use Dealt\DealtSDK\DealtEnvironment;
 
 $client = new DealtClient([
     "api_key" => "secret_dealt_api_key",
-    "env" => DealtEnvironment::PRODUCTION
+    "env" => DealtEnvironment::$PRODUCTION
 ]);
 ```
 

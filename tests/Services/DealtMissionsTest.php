@@ -24,7 +24,7 @@ final class DealtMissionsTest extends TestCase
         parent::__construct();
         $this->client = new DealtClient([
             'api_key' => 'test-api-key',
-            'env'     => DealtEnvironment::TEST,
+            'env'     => DealtEnvironment::$TEST,
         ]);
 
         /*  @var MockObject */
@@ -72,11 +72,11 @@ final class DealtMissionsTest extends TestCase
 
         $this->assertInstanceOf(Mission::class, $result->missions[0]);
         $this->assertInstanceOf(Offer::class, $result->missions[0]->offer);
-        $this->assertEquals(MissionStatus::SUBMITTED, $result->missions[0]->status);
+        $this->assertEquals(MissionStatus::$SUBMITTED, $result->missions[0]->status);
 
         $this->assertInstanceOf(Mission::class, $result->missions[1]);
         $this->assertInstanceOf(Offer::class, $result->missions[1]->offer);
-        $this->assertEquals(MissionStatus::DRAFT, $result->missions[1]->status);
+        $this->assertEquals(MissionStatus::$DRAFT, $result->missions[1]->status);
     }
 
     public function testMissionQueryOnSuccessfulResponse(): void

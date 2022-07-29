@@ -13,7 +13,7 @@ final class DealtClientTest extends TestCase
     {
         $this->assertInstanceOf(
             DealtClient::class,
-            new DealtClient(['api_key' => 'xxx', 'env' => DealtEnvironment::PRODUCTION])
+            new DealtClient(['api_key' => 'xxx', 'env' => DealtEnvironment::$PRODUCTION])
         );
     }
 
@@ -28,7 +28,7 @@ final class DealtClientTest extends TestCase
     public function testThrowsWhenMissingApiKey(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new DealtClient(['env' => DealtEnvironment::TEST]);
+        new DealtClient(['env' => DealtEnvironment::$TEST]);
     }
 
     public function testThrowsWhenGivenWrongApiKeyType(): void

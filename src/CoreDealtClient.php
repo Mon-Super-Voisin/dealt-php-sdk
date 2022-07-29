@@ -15,9 +15,6 @@ class CoreDealtClient
 {
     /** @var GraphQLClient */
     public $gqlClient;
-    public const DEFAULT_CONFIG = [
-        'env' => DealtEnvironment::TEST,
-    ];
 
     /**
      * Initializes a new client.
@@ -29,7 +26,9 @@ class CoreDealtClient
         if (!is_array($config)) {
             throw new InvalidArgumentException('$config must be an array');
         }
-        $config = array_merge(DealtClient::DEFAULT_CONFIG, $config);
+        $config = array_merge([
+            'env' => DealtEnvironment::$TEST,
+        ], $config);
         $this->validateConfig($config);
         $this->gqlClient = new GraphQLClient(strval($config['api_key']), strval($config['env']));
     }
@@ -45,7 +44,7 @@ class CoreDealtClient
             throw new InvalidArgumentException('api_key must be a string');
         }
 
-        if (!isset($config['env']) || !is_string($config['env']) || !in_array($config['env'], [DealtEnvironment::PRODUCTION, DealtEnvironment::TEST])) {
+        if (!isset($config['env']) || !is_string($config['env']) || !in_array($config['env'], [DealtEnvironment::$PRODUCTION, DealtEnvironment::$TEST])) {
             throw new InvalidArgumentException('env must be a string set to "production" or "test"');
         }
     }
