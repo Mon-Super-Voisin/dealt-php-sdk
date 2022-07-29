@@ -27,7 +27,7 @@ final class DealtMissionsTest extends TestCase
             'env'     => DealtEnvironment::TEST,
         ]);
 
-        /**  @var MockObject */
+        /*  @var MockObject */
         $this->graphQLClientStub         = $this->createPartialMock(GraphQLClient::class, ['request']);
         $this->graphQLClientStub->apiKey = 'test-api-key';
         $this->client->gqlClient         = $this->graphQLClientStub;
