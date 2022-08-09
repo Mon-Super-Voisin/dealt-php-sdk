@@ -26,6 +26,7 @@ final class EndToEndTest extends TestCase
             'address'  => [
                 'country'  => 'France',
                 'zip_code' => '92190',
+                'street1'  => 'Test'
             ],
         ]);
 
@@ -39,6 +40,7 @@ final class EndToEndTest extends TestCase
             'address'  => [
                 'country'  => 'France',
                 'zip_code' => '92190',
+                'street1'  => 'Test'
             ],
             'customer' => [
                 'first_name'    => 'Jean',
