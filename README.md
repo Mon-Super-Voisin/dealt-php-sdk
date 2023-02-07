@@ -88,7 +88,9 @@ $result = $client->missions->submit([
     "offer_id" => "your-offer-id",
     "address" => [
         "country" => "France",
-        "zip_code" => "92190"
+        "zip_code" => "92190",
+        "city" => "Antony",
+        "street1" => "XX Rue de la Paix"
     ],
     "customer" => [
         "first_name" => "John",
